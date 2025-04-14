@@ -1,7 +1,7 @@
-from aiogram import Router, html, md, F
+from aiogram import F, Router, md
+from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import Message
-from aiogram.enums import ParseMode
 
 from .config import config
 
