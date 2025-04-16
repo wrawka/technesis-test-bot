@@ -4,6 +4,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 
 from .config import config
+from xls_parser import XlsParser
 
 router = Router()
 
@@ -36,12 +37,12 @@ async def text_handler(message: Message) -> None:
 async def file_handler(message: Message) -> None:
     allowed_extensions = {".xls", ".xlsx"}
     file_name = message.document.file_name
+    file_path = f"{config.media_path}/{file_name}"
 
     if not any(file_name.endswith(ext) for ext in allowed_extensions):
-        await message.answer("Пожалуйста, загрузите файл в формате Excel (.xls или .xlsx).")
+        await message.answer("Пожалуйста, загрузи файл в формате Excel (.xls или .xlsx).")
         return
 
-    try:
-        await message.bot.download(message.document, f"{config.media_path}/{file_name}")
-    except TypeError:
-        await message.answer("Произошла ошибка при загрузке файла. Попробуйте снова.")
+    await message.bot.download(message.document, file_path)
+
+    print(XlsParser.parse_file(file_path))
